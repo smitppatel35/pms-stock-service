@@ -53,10 +53,8 @@ public class MedicineController {
     public ResponseEntity<?> getMedicineById(@PathVariable("medicineId") int id) {
         try {
             MedicineEntity medicine = medicineService.getMedicineById(id);
-
             return ResponseEntity.ok(medicine);
         } catch (MedicineNotFoundException e) {
-
             return new ResponseEntity<>(new ErrorResponse("true", e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
