@@ -2,6 +2,8 @@ package com.pms.medicalstock.config;
 
 import com.pms.medicalstock.entity.MedicineEntity;
 import com.pms.medicalstock.repository.MedicineRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,9 @@ import java.text.SimpleDateFormat;
 
 @Component
 public class DBInitializer {
+
+    // Logger
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBInitializer.class);
 
     @Autowired
     private MedicineRepository medicineRepository;
@@ -28,6 +33,8 @@ public class DBInitializer {
     @PostConstruct
     private void init() throws ParseException {
 
+        LOGGER.info("[medical-stock-service] [MedicineStockInformation] Database initialization started");
+
         // Parsing String to java.util.Date Object
         simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
 
@@ -37,6 +44,8 @@ public class DBInitializer {
         medicine4();
         medicine5();
         medicine6();
+
+        LOGGER.info("[medical-stock-service] [MedicineStockInformation] Database initialization Completed");
     }
 
     private void medicine1() throws ParseException {
