@@ -1,12 +1,17 @@
 package com.pms.medicalstock.controller;
 
+import com.pms.medicalstock.dto.StockUpdateDto;
 import com.pms.medicalstock.entity.MedicineEntity;
+import com.pms.medicalstock.exception.MedicineNotFoundException;
 import com.pms.medicalstock.service.MedicineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,5 +39,20 @@ public class MedicineController {
 
         LOGGER.info("[medical-stock-service] [MedicineStockInformation] process completed");
         return ResponseEntity.ok(medicines);
+    }
+
+    @PutMapping("/MedicineStockInformation")
+    public ResponseEntity<?> updateMedicineStock(@RequestBody StockUpdateDto updateDto) {
+        LOGGER.info("[medical-stock-service] [MedicineStockInformation] Stock Update initiated");
+
+        try {
+            medicineService.updateStock(updateDto);
+            LOGGER.info("[medical-stock-service] [MedicineStockInformation] Stock Update Completed");
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (MedicineNotFoundException e) {
+            LOGGER.info("[medical-stock-service] [MedicineStockInformation] Stock Update Conflicted");
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
     }
 }
